@@ -43,10 +43,25 @@ function loadQuestion() {
     }
 
     const questionObj = selectedQuestions[currentQuestionIndex];
-    document.getElementById('question').innerText = questionObj.question;
+    const questionDiv = document.getElementById('question');
+    questionDiv.innerHTML = ''; // Clear previous question content
+
+    // Set the text for the question
+    const questionText = document.createElement('p');
+    questionText.innerText = questionObj.question;
+    questionDiv.appendChild(questionText);
+
+    // Check if the question has an associated image and display it
+    if (questionObj.imageSrc) {
+        const image = document.createElement('img');
+        image.src = questionObj.imageSrc;
+        image.alt = "Spatial Reasoning Question Image";
+        image.style.maxWidth = "100%";  // Ensure the image fits within the container
+        questionDiv.appendChild(image);
+    }
 
     const answersDiv = document.getElementById('answers');
-    answersDiv.innerHTML = '';
+    answersDiv.innerHTML = ''; // Clear previous answer buttons
 
     questionObj.answers.forEach(answer => {
         const button = document.createElement('button');
@@ -62,6 +77,7 @@ function loadQuestion() {
     // Record the start time of this question
     questionStartTime = Date.now();
 }
+
 
 function checkAnswer(answer, questionObj) {
     if (answer === questionObj.correct) {
