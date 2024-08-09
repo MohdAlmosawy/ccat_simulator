@@ -80,13 +80,18 @@ function loadQuestion() {
 
 
 function checkAnswer(answer, questionObj) {
-    if (answer === questionObj.correct) {
+    const isCorrect = answer === questionObj.correct;
+    questionObj.answeredCorrectly = isCorrect;  // Track if the answer was correct
+    if (isCorrect) {
         score++;
         categoryPerformance[questionObj.category].correct++;
     }
     currentQuestionIndex++;
     loadQuestion();
+    return isCorrect;
 }
+
+
 
 function recordPerformance(questionObj) {
     const timeSpent = Date.now() - questionStartTime;
@@ -203,5 +208,46 @@ function generateFeedback() {
     const minScoreCategory = Object.keys(categoryPerformance).reduce((a, b) => categoryPerformance[a].correct < categoryPerformance[b].correct ? a : b);
     feedback += `<p>Your weakest performance was in <strong>${minScoreCategory}</strong>.</p>`;
 
+    // New: Accuracy by Difficulty
+    const difficultyAccuracy = calculateAccuracyByDifficulty();
+    feedback += `
+        <h4>Accuracy by Difficulty:</h4>
+        <p><strong>Easy:</strong> ${difficultyAccuracy.easy}% accuracy</p>
+        <p><strong>Medium:</strong> ${difficultyAccuracy.medium}% accuracy</p>
+        <p><strong>Hard:</strong> ${difficultyAccuracy.hard}% accuracy</p>
+    `;
+
+    // New: Time Management
+    feedback += `<p>You tended to spend more time on questions you got <strong>${difficultyAccuracy.timeComparison}</strong>.</p>`;
+
     return feedback;
+}
+
+function calculateAccuracyByDifficulty() {
+    const accuracy = {
+        easy: calculateAccuracyForDifficulty('Easy'),
+        medium: calculateAccuracyForDifficulty('Medium'),
+        hard: calculateAccuracyForDifficulty('Hard'),
+        timeComparison: compareTimeSpentOnCorrectVsIncorrect(),
+    };
+    return accuracy;
+}
+
+function calculateAccuracyForDifficulty(difficulty) {
+    const totalQuestions = selectedQuestions.filter(q => q.difficulty === difficulty).length;
+    const correctAnswers = selectedQuestions.filter(q => q.difficulty === difficulty && q.answeredCorrectly).length;
+    if (totalQuestions === 0) return 0;
+    return Math.round((correctAnswers / totalQuestions) * 100);
+}
+
+
+
+function compareTimeSpentOnCorrectVsIncorrect() {
+    const correctQuestions = selectedQuestions.filter(q => q.answeredCorrectly);
+    const incorrectQuestions = selectedQuestions.filter(q => !q.answeredCorrectly);
+
+    const timeOnCorrect = correctQuestions.reduce((total, q) => total + categoryPerformance[q.category].timeSpent, 0);
+    const timeOnIncorrect = incorrectQuestions.reduce((total, q) => total + categoryPerformance[q.category].timeSpent, 0);
+
+    return timeOnCorrect > timeOnIncorrect ? 'correct' : 'incorrect';
 }
