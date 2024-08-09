@@ -45,3 +45,12 @@ button {
     font-size: 20px;
     font-weight: bold;
 }
+
+#results {
+    display: none;  /* Initially hidden */
+    margin-top: 20px;
+}
+
+#results h2, #results h3, #results p {
+    margin: 10px 0;
+}

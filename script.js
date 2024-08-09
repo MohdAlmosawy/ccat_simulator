@@ -4,6 +4,12 @@ let currentQuestionIndex = 0;
 let score = 0;
 let timeLeft = 900; // 15 minutes in seconds
 let timerInterval;
+let questionStartTime;
+let categoryPerformance = {
+    "Verbal Reasoning": { correct: 0, timeSpent: 0 },
+    "Math and Logic": { correct: 0, timeSpent: 0 },
+    "Spatial Reasoning": { correct: 0, timeSpent: 0 }
+};
 
 const selectedQuestions = selectQuestions();
 
@@ -46,19 +52,29 @@ function loadQuestion() {
         const button = document.createElement('button');
         button.innerText = answer;
         button.addEventListener('click', () => {
-            checkAnswer(answer);
+            recordPerformance(questionObj);
+            checkAnswer(answer, questionObj);
             updateProgressBar();
         });
         answersDiv.appendChild(button);
     });
+
+    // Record the start time of this question
+    questionStartTime = Date.now();
 }
 
-function checkAnswer(answer) {
-    if (answer === selectedQuestions[currentQuestionIndex].correct) {
+function checkAnswer(answer, questionObj) {
+    if (answer === questionObj.correct) {
         score++;
+        categoryPerformance[questionObj.category].correct++;
     }
     currentQuestionIndex++;
     loadQuestion();
+}
+
+function recordPerformance(questionObj) {
+    const timeSpent = Date.now() - questionStartTime;
+    categoryPerformance[questionObj.category].timeSpent += timeSpent;
 }
 
 function updateProgressBar() {
@@ -68,8 +84,30 @@ function updateProgressBar() {
 
 function endTest() {
     document.getElementById('test-area').style.display = 'none';
-    document.getElementById('results').innerText = `You scored ${score} out of ${selectedQuestions.length}`;
     clearInterval(timerInterval);
+    displayResults();
+}
+
+function displayResults() {
+    const resultsDiv = document.getElementById('results');
+    
+    resultsDiv.innerHTML = `
+        <h2>Your Score: ${score} out of ${selectedQuestions.length}</h2>
+        <h3>Performance Insights:</h3>
+        <p><strong>Verbal Reasoning:</strong> Correct Answers: ${categoryPerformance["Verbal Reasoning"].correct}, Time Spent: ${formatTime(categoryPerformance["Verbal Reasoning"].timeSpent)}</p>
+        <p><strong>Math and Logic:</strong> Correct Answers: ${categoryPerformance["Math and Logic"].correct}, Time Spent: ${formatTime(categoryPerformance["Math and Logic"].timeSpent)}</p>
+        <p><strong>Spatial Reasoning:</strong> Correct Answers: ${categoryPerformance["Spatial Reasoning"].correct}, Time Spent: ${formatTime(categoryPerformance["Spatial Reasoning"].timeSpent)}</p>
+        ${generateFeedback()}
+    `;
+
+    resultsDiv.style.display = 'block';  // Ensure the results are visible
+}
+
+function formatTime(milliseconds) {
+    const totalSeconds = Math.floor(milliseconds / 1000);
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    return `${minutes}m ${seconds < 10 ? '0' : ''}${seconds}s`;
 }
 
 function selectQuestions() {
@@ -132,4 +170,22 @@ function shuffleArray(array) {
         [array[i], array[j]] = [array[j], array[i]];
     }
     return array;
+}
+
+function generateFeedback() {
+    let feedback = "<h3>Feedback:</h3>";
+
+    // Identify the category where the user spent the most time
+    const maxTimeCategory = Object.keys(categoryPerformance).reduce((a, b) => categoryPerformance[a].timeSpent > categoryPerformance[b].timeSpent ? a : b);
+    feedback += `<p>You spent the most time on <strong>${maxTimeCategory}</strong>.</p>`;
+
+    // Identify the category where the user scored the highest
+    const maxScoreCategory = Object.keys(categoryPerformance).reduce((a, b) => categoryPerformance[a].correct > categoryPerformance[b].correct ? a : b);
+    feedback += `<p>Your best performance was in <strong>${maxScoreCategory}</strong>.</p>`;
+
+    // Identify the category where the user scored the lowest
+    const minScoreCategory = Object.keys(categoryPerformance).reduce((a, b) => categoryPerformance[a].correct < categoryPerformance[b].correct ? a : b);
+    feedback += `<p>Your weakest performance was in <strong>${minScoreCategory}</strong>.</p>`;
+
+    return feedback;
 }
