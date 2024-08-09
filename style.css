@@ -54,3 +54,21 @@ button {
 #results h2, #results h3, #results p {
     margin: 10px 0;
 }
+
+
+.pairs-container {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.pair {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+
+.pair span {
+    width: 45%;
+    text-align: left;
+}

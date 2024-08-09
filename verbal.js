@@ -187,5 +187,131 @@ const verbalQuestions = [
     "question": "Select the correct sequence of words that fits the pattern of the first pair: HEART is to BEAT as CLOCK is to:",
     "answers": ["Time", "Tick", "Hand", "Number", "Alarm"],
     "correct": "Tick"
-    }
+    },
+    {
+        "category": "Verbal Reasoning",
+        "difficulty": "Medium",
+        "question": "How many of the five names in the left-hand column are exactly the same as the corresponding entry in the right-hand column?",
+        "pairs": [
+            {"left": "Xavier Smyth", "right": "Xaviar Smyth"},
+            {"left": "Henry Wyatt", "right": "Henry Wyatt"},
+            {"left": "Sarah Collins", "right": "Sarah Colins"},
+            {"left": "Wendy Hall", "right": "Wendy Hall"},
+            {"left": "Bruce Raynelds", "right": "Bruce Raynalds"}
+        ],
+        "answers": ["0", "1", "2", "3", "4", "5"],
+        "correct": "2"
+    },
+    { 
+        category: "Verbal Reasoning", 
+        difficulty: "Easy", 
+        question: "How many of the five names in the left-hand column are exactly the same as the corresponding entry in the right-hand column?",
+        pairs: [
+          {left: "John Smith", right: "John Smith"},
+          {left: "Alice Brown", right: "Alice Browm"},
+          {left: "David Clark", right: "David Clark"},
+          {left: "Emily Johnson", right: "Emily Johnson"},
+          {left: "Robert Lewis", right: "Robert Luis"}
+        ],
+        answers: ["0", "1", "2", "3", "4", "5"], 
+        correct: "3"
+      },
+      { 
+        category: "Verbal Reasoning", 
+        difficulty: "Easy", 
+        question: "How many of the five numbers in the left-hand column are exactly the same as the corresponding entry in the right-hand column?",
+        pairs: [
+          {left: "12345", right: "12345"},
+          {left: "67890", right: "67800"},
+          {left: "24680", right: "24680"},
+          {left: "13579", right: "13597"},
+          {left: "98765", right: "98765"}
+        ],
+        answers: ["0", "1", "2", "3", "4", "5"], 
+        correct: "3"
+      },
+      { 
+        category: "Verbal Reasoning", 
+        difficulty: "Medium", 
+        question: "How many of the five names in the left-hand column are exactly the same as the corresponding entry in the right-hand column?",
+        pairs: [
+          {left: "Jessica Adams", right: "Jessica Admas"},
+          {left: "Michael Brown", right: "Michael Brown"},
+          {left: "Samuel Green", right: "Samuel Greene"},
+          {left: "Victoria White", right: "Victoria White"},
+          {left: "Richard Harris", right: "Richard Haris"}
+        ],
+        answers: ["0", "1", "2", "3", "4", "5"], 
+        correct: "2"
+      },
+      { 
+        category: "Verbal Reasoning", 
+        difficulty: "Medium", 
+        question: "How many of the five dates in the left-hand column are exactly the same as the corresponding entry in the right-hand column?",
+        pairs: [
+          {left: "12/05/2021", right: "12/05/2021"},
+          {left: "03/17/2022", right: "03/17/2022"},
+          {left: "07/21/2020", right: "07/21/2021"},
+          {left: "11/11/2019", right: "11/11/2019"},
+          {left: "04/02/2018", right: "04/22/2018"}
+        ],
+        answers: ["0", "1", "2", "3", "4", "5"], 
+        correct: "3"
+      },
+      { 
+        category: "Verbal Reasoning", 
+        difficulty: "Medium", 
+        question: "How many of the five product codes in the left-hand column are exactly the same as the corresponding entry in the right-hand column?",
+        pairs: [
+          {left: "AB123", right: "AB123"},
+          {left: "CD456", right: "CD456"},
+          {left: "EF789", right: "EF799"},
+          {left: "GH012", right: "GH012"},
+          {left: "IJ345", right: "IJ344"}
+        ],
+        answers: ["0", "1", "2", "3", "4", "5"], 
+        correct: "3"
+      },
+      { 
+        category: "Verbal Reasoning", 
+        difficulty: "Hard", 
+        question: "How many of the five email addresses in the left-hand column are exactly the same as the corresponding entry in the right-hand column?",
+        pairs: [
+          {left: "john.doe@example.com", right: "john.doe@example.com"},
+          {left: "jane.doe123@example.org", right: "jane.doe132@example.org"},
+          {left: "robert_smith@example.net", right: "robert_smith@example.net"},
+          {left: "emily.brown@example.co", right: "emily.brown@example.com"},
+          {left: "michael_jones@example.org", right: "michael.jones@example.org"}
+        ],
+        answers: ["0", "1", "2", "3", "4", "5"], 
+        correct: "2"
+      },
+      { 
+        category: "Verbal Reasoning", 
+        difficulty: "Hard", 
+        question: "How many of the five license plates in the left-hand column are exactly the same as the corresponding entry in the right-hand column?",
+        pairs: [
+          {left: "ABC-123", right: "ABC-123"},
+          {left: "XYZ-987", right: "XYZ-897"},
+          {left: "LMN-456", right: "LMN-456"},
+          {left: "PQR-789", right: "PQR-788"},
+          {left: "STU-321", right: "STU-321"}
+        ],
+        answers: ["0", "1", "2", "3", "4", "5"], 
+        correct: "3"
+      },
+      { 
+        category: "Verbal Reasoning", 
+        difficulty: "Hard", 
+        question: "How many of the five usernames in the left-hand column are exactly the same as the corresponding entry in the right-hand column?",
+        pairs: [
+          {left: "user123", right: "user132"},
+          {left: "alpha_beta", right: "alpha_beta"},
+          {left: "gamma007", right: "gamma007"},
+          {left: "delta@456", right: "delta@456"},
+          {left: "omega789", right: "omega798"}
+        ],
+        answers: ["0", "1", "2", "3", "4", "5"], 
+        correct: "3"
+      }
 ];

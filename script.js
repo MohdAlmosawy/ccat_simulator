@@ -51,6 +51,29 @@ function loadQuestion() {
     questionText.innerText = questionObj.question;
     questionDiv.appendChild(questionText);
 
+    // Check if the question has pairs and display them
+    if (questionObj.pairs) {
+        const pairsDiv = document.createElement('div');
+        pairsDiv.classList.add('pairs-container');
+        
+        questionObj.pairs.forEach(pair => {
+            const pairDiv = document.createElement('div');
+            pairDiv.classList.add('pair');
+            
+            const leftSpan = document.createElement('span');
+            leftSpan.innerText = pair.left;
+            pairDiv.appendChild(leftSpan);
+
+            const rightSpan = document.createElement('span');
+            rightSpan.innerText = pair.right;
+            pairDiv.appendChild(rightSpan);
+
+            pairsDiv.appendChild(pairDiv);
+        });
+
+        questionDiv.appendChild(pairsDiv);
+    }
+
     // Check if the question has an associated image and display it
     if (questionObj.imageSrc) {
         const image = document.createElement('img');
@@ -77,6 +100,7 @@ function loadQuestion() {
     // Record the start time of this question
     questionStartTime = Date.now();
 }
+
 
 
 function checkAnswer(answer, questionObj) {
