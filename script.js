@@ -50,7 +50,10 @@ function loadQuestion() {
     questionObj.answers.forEach(answer => {
         const button = document.createElement('button');
         button.innerText = answer;
-        button.addEventListener('click', () => checkAnswer(answer));
+        button.addEventListener('click', () => {
+            checkAnswer(answer);
+            updateProgressBar();
+        });
         answersDiv.appendChild(button);
     });
 }
@@ -61,6 +64,11 @@ function checkAnswer(answer) {
     }
     currentQuestionIndex++;
     loadQuestion();
+}
+
+function updateProgressBar() {
+    const progressPercentage = (currentQuestionIndex / questions.length) * 100;
+    document.getElementById('progress-bar').style.width = `${progressPercentage}%`;
 }
 
 function endTest() {
