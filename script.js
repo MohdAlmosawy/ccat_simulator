@@ -106,14 +106,23 @@ function loadQuestion() {
 function checkAnswer(answer, questionObj) {
     const isCorrect = answer === questionObj.correct;
     questionObj.answeredCorrectly = isCorrect;  // Track if the answer was correct
+    questionObj.userAnswer = answer; // Store the user's answer
+
+    const timeSpent = Date.now() - questionStartTime;
+    questionObj.timeSpent = timeSpent;  // Track time spent on this specific question
+
     if (isCorrect) {
         score++;
         categoryPerformance[questionObj.category].correct++;
     }
+    categoryPerformance[questionObj.category].timeSpent += timeSpent;
+
     currentQuestionIndex++;
     loadQuestion();
     return isCorrect;
 }
+
+
 
 
 
@@ -274,4 +283,40 @@ function compareTimeSpentOnCorrectVsIncorrect() {
     const timeOnIncorrect = incorrectQuestions.reduce((total, q) => total + categoryPerformance[q.category].timeSpent, 0);
 
     return timeOnCorrect > timeOnIncorrect ? 'correct' : 'incorrect';
+}
+
+function displayResults() {
+    const resultsDiv = document.getElementById('results');
+    
+    let detailedResults = `
+        <h2>Your Score: ${score} out of ${selectedQuestions.length}</h2>
+        <h3>Performance Insights:</h3>
+        <p><strong>Verbal Reasoning:</strong> Correct Answers: ${categoryPerformance["Verbal Reasoning"].correct}, Time Spent: ${formatTime(categoryPerformance["Verbal Reasoning"].timeSpent)}</p>
+        <p><strong>Math and Logic:</strong> Correct Answers: ${categoryPerformance["Math and Logic"].correct}, Time Spent: ${formatTime(categoryPerformance["Math and Logic"].timeSpent)}</p>
+        <p><strong>Spatial Reasoning:</strong> Correct Answers: ${categoryPerformance["Spatial Reasoning"].correct}, Time Spent: ${formatTime(categoryPerformance["Spatial Reasoning"].timeSpent)}</p>
+        ${generateFeedback()}
+        <h3>Detailed Results:</h3>
+        <ul>
+    `;
+    
+    selectedQuestions.forEach((questionObj, index) => {
+        const userAnswer = questionObj.userAnswer || "No Answer";
+        const correctness = questionObj.answeredCorrectly ? "Correct" : "Incorrect";
+        const timeSpent = formatTime(questionObj.timeSpent);
+
+        detailedResults += `
+            <li>
+                <p><strong>Question ${index + 1}:</strong> ${questionObj.question}</p>
+                <p><strong>Your Answer:</strong> ${userAnswer}</p>
+                <p><strong>Correct Answer:</strong> ${questionObj.correct}</p>
+                <p><strong>Time Spent:</strong> ${timeSpent}</p>
+                <p><strong>Result:</strong> ${correctness}</p>
+                <hr>
+            </li>
+        `;
+    });
+
+    detailedResults += `</ul>`;
+    resultsDiv.innerHTML = detailedResults;
+    resultsDiv.style.display = 'block';  // Ensure the results are visible
 }
