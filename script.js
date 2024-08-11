@@ -36,6 +36,9 @@ function displayTime() {
     document.getElementById('timer').innerText = `Time Remaining: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
 }
 
+let hypothesisTimeLeft = 18; // 18 seconds for each question
+let hypothesisTimerInterval;
+
 function loadQuestion() {
     if (currentQuestionIndex >= selectedQuestions.length) {
         endTest();
@@ -90,12 +93,16 @@ function loadQuestion() {
         const button = document.createElement('button');
         button.innerText = answer;
         button.addEventListener('click', () => {
+            clearInterval(hypothesisTimerInterval); // Stop hypothesis timer
             recordPerformance(questionObj);
             checkAnswer(answer, questionObj);
             updateProgressBar();
         });
         answersDiv.appendChild(button);
     });
+
+    // Start the hypothesis timer
+    startHypothesisTimer();
 
     // Record the start time of this question
     questionStartTime = Date.now();
@@ -110,6 +117,8 @@ function checkAnswer(answer, questionObj) {
 
     const timeSpent = Date.now() - questionStartTime;
     questionObj.timeSpent = timeSpent;  // Track time spent on this specific question
+
+    clearInterval(hypothesisTimerInterval); // Stop the hypothesis timer
 
     if (isCorrect) {
         score++;
@@ -319,4 +328,30 @@ function displayResults() {
     detailedResults += `</ul>`;
     resultsDiv.innerHTML = detailedResults;
     resultsDiv.style.display = 'block';  // Ensure the results are visible
+}
+
+function startHypothesisTimer() {
+    hypothesisTimeLeft = 18; // Reset to 18 seconds
+    const hypothesisTimerBar = document.getElementById('hypothesis-timer-bar');
+    const hypothesisTimerText = document.getElementById('hypothesis-timer-text');
+
+    hypothesisTimerBar.style.width = '100%';
+    hypothesisTimerText.innerText = `Expected Time: ${hypothesisTimeLeft}s`;
+
+    const initialWidth = 100; // 100% width
+    const widthDecrement = initialWidth / hypothesisTimeLeft; // Decrement per second
+
+    hypothesisTimerInterval = setInterval(() => {
+        hypothesisTimeLeft--;
+        hypothesisTimerText.innerText = `Expected Time: ${hypothesisTimeLeft}s`;
+
+        const currentWidth = Math.max(0, initialWidth - widthDecrement * (18 - hypothesisTimeLeft));
+        hypothesisTimerBar.style.width = `${currentWidth}%`;
+
+        if (hypothesisTimeLeft <= 0) {
+            clearInterval(hypothesisTimerInterval);
+            hypothesisTimerText.innerText = `Time Exceeded`;
+            hypothesisTimerBar.style.width = '0%';
+        }
+    }, 1000);
 }
