@@ -281,7 +281,7 @@ const mathLogicQuestions = [
     {
         "category": "Math and Logic",
         "difficulty": "Hard",
-        "question": "In an election, Candidate A received 10% more votes than Candidate B and 20% fewer votes than Candidate C. If Candidate C received 22,000 votes, how many votes did Candidate B receive?",
+        "question": "In an election, Candidate A received 10% more votes than Candidate B and 20% fewer votes than Candidate C. If Candidate C received 25,000 votes, how many votes did Candidate B receive?",
         "answers": [
             "18,000",
             "19,800",
